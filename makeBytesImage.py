@@ -39,15 +39,19 @@ def main():
 	args = parser.parse_args()
 
 	imgFilePath = args.filename
+	
+	try :
+		tkWndw = tkinter.Tk()
+	except Exception:
+		hasGUI = False
+	else :
+		if (imgFilePath == None) :
+			imgFilePath = filedialog.askopenfilename( initialdir=os.getcwd() )
+
 	if (not hasGUI) :
 		if imgFilePath == None :
 			parser.print_help()
 			parser.error("No GUI - must specify image filepath using -f ")
-	
-	if hasGUI :
-		tkWndw = tkinter.Tk()
-		if (imgFilePath == None) :
-			imgFilePath = filedialog.askopenfilename( initialdir=os.getcwd() )
 
 	addNoiseToImage(imgFilePath, args.level, args.spRatio)
 
@@ -111,9 +115,10 @@ def addNoiseToImage(imgFilePath: str, intensity: float, spRatio: float) :
 			# Store output .bytes format
 			bytesOut = bytearray()
 
-			bytesOut.extend((origImage.size[0]).to_bytes(4, byteorder="little"))	#	Width
-			bytesOut.extend((origImage.size[1]).to_bytes(4, byteorder="little"))	#	Height
-			bytesOut.extend((3).to_bytes(4, byteorder="little"))					#	Channels RGB = 3
+			bytesOut.extend((origImage.size[0]).to_bytes(4, byteorder='little'))	#	Width
+			bytesOut.extend((origImage.size[1]).to_bytes(4, byteorder='little'))	#	Height
+			bytesOut.extend((3).to_bytes(4, byteorder='little'))					#	Channels RGB = 3
+			bytesOut.extend((1).to_bytes(4, byteorder='little'))					#	Pixel Size = 1 Byte
 			bytesOut.extend(npNoiseArray.tobytes())
 			print("%d bytes written" % len(bytesOut))
 
@@ -123,7 +128,7 @@ def addNoiseToImage(imgFilePath: str, intensity: float, spRatio: float) :
 			print(" ... Done !")
 
 	else:
-		print("Couldnt find image at " + imgFilePath)
+		print("Couldn't find image at " + imgFilePath)
 
 
 
