@@ -27,4 +27,6 @@
 	#define REDUCE_SIZE			32
 	#define REDUCE_BLOCKS		(GENERATE_BLOCKS / REDUCE_SIZE)
 
+	extern int testLoadBytesImage(std::string filePath);
+
 #endif

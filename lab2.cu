@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
 	std::cout << "  2 - GPU Color to Grayscale \n";
 	std::cout << "  3 - CPU Monte-Carlo Pi \n";
 	std::cout << "  4 - GPU Monte-Carlo Pi \n";
+	std::cout << "  5 - Bytes-Image File Test \n";
 
 	std::cin >> choice;
 
@@ -57,12 +58,34 @@ int main(int argc, char** argv) {
 			std::cout << "\n\n ... Done!\n";
 			break;
 
+		case 5:
+			std::cout << "Running BytesImage File Test on CPU! \n\n";
+			testLoadBytesImage("./resources/lena512color.tiff.bytes");
+			std::cout << "\n\n ... Done!\n";
+			break;
+
+			
+
 		default:
 			std::cout << "Hmm ... Devious, you are!\n";
 			std::cout << " Choose correctly, you must.\n";
 			break;
 	}
 
+	return 0;
+}
+
+int testLoadBytesImage(std::string filePath) {
+	ImageDim imgDim;
+	uint8_t * imgData;
+	int bytesRead = loadBytesImage(filePath, imgDim, &imgData);
+	int bytesExpected = imgDim.height * imgDim.width * imgDim.channels * imgDim.pixelSize;
+	if (bytesRead != bytesExpected) {
+		std::cout << "Read Failed - Insufficient Bytes - " << bytesRead 
+			<< " / "  << bytesExpected << " \n";
+		return -1;
+	}
+	std::cout << "Read Success - " << bytesRead << " Bytes \n"; 
 	return 0;
 }
 

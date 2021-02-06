@@ -177,7 +177,39 @@ int runCpuMCPi(uint64_t iterationCount, uint64_t sampleSize) {
 }
 
 
+int loadBytesImage(std::string bytesFilePath, ImageDim &imgDim, uint8_t ** imgData ) {
+	#ifndef DEBUG_PRINT_DISABLE
+		std::cout << "Opening File @ \'" << bytesFilePath << "\' \n";
+	#endif
 
+	std::ifstream bytesFile;
 
+	bytesFile.open(bytesFilePath.c_str(), std::ios::in | std::ios::binary);
+
+	if (! bytesFile.is_open()) {
+		std::cout << "Unable to open \'" << bytesFilePath << "\' \n";
+		return -1;
+	}
+
+	ImageDim_t fileDim;
+	bytesFile.read((char *) &fileDim, sizeof(fileDim));
+
+	std::cout << "Found " << fileDim.height << " x " << fileDim.width
+		<< " x " << fileDim.channels << " x " << fileDim.pixelSize << " \n";
+	
+	uint64_t numBytes = fileDim.height * fileDim.width * fileDim.channels;
+	*imgData = (uint8_t *) malloc(numBytes * sizeof(uint8_t));
+	bytesFile.read((char *) *imgData, numBytes * sizeof(uint8_t));
+
+	std::cout << "Read " << bytesFile.gcount() << " bytes \n" ;
+
+	imgDim.height		= fileDim.height;
+	imgDim.width		= fileDim.width;
+	imgDim.channels		= fileDim.channels;
+	imgDim.pixelSize	= fileDim.pixelSize;
+	
+	return bytesFile.gcount();
+
+}
 
 
