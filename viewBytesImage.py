@@ -63,7 +63,9 @@ def createRawBytes(bytesFilePath: str) -> Image:
 			imgH = int.from_bytes(imgBytes[0:4], byteorder='little')
 			imgW = int.from_bytes(imgBytes[4:8], byteorder='little')
 			imgSize = imgH, imgW
-			img = Image.frombytes('RGB', imgSize, imgBytes[12:])
+			img = Image.frombytes('RGB', imgSize, imgBytes[16:])
+
+			# print([int(x) for x in imgBytes[3088:4000:3]])
 
 			return img
 

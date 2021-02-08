@@ -45,6 +45,7 @@ def main():
 	except Exception:
 		hasGUI = False
 	else :
+		hasGUI = True
 		if (imgFilePath == None) :
 			imgFilePath = filedialog.askopenfilename( initialdir=os.getcwd() )
 
