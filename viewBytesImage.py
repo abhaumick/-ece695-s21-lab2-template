@@ -14,7 +14,7 @@ try:
 	import tkinter
 	from tkinter import filedialog
 except ImportError:
-	print("No GUI element found - disabling GUI")
+	print("\n info: No GUI element found - disabling GUI \n")
 	hasGUI = False
 else:
 	hasGUI = True
@@ -50,12 +50,26 @@ def main():
 	img = createRawBytes(imgFilePath)
 
 	if hasGUI :
+		img.show()
 		displayImage = img
 		tkImage = ImageTk.PhotoImage(displayImage)
 		tkinter.Label(tkWndw, image=tkImage).pack()
 		tkWndw.mainloop()
 
-def createRawBytes(bytesFilePath: str) -> Image:
+def createRawBytes(bytesFilePath: str) -> PIL.Image:
+	'''
+	Reads a .bytes file and converts it into a PIL.Image object
+
+	Param
+	-------
+	bytesFilePath :	str : 
+		path to the .bytes file
+   
+	Returns
+	-------
+	out : PIL.Image :
+		object created from .bytes file data
+	'''
 	if os.path.isfile( bytesFilePath ):
 		with open(bytesFilePath, "rb") as bytesFile :
 			imgBytes = bytes(bytesFile.read())

@@ -14,7 +14,7 @@ try:
 	import tkinter
 	from tkinter import filedialog
 except ImportError:
-	print("No GUI element found - disabling GUI")
+	print("\n info: No GUI element found - disabling GUI \n")
 	hasGUI = False
 else:
 	hasGUI = True
