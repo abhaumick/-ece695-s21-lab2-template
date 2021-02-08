@@ -25,11 +25,15 @@ int main(int argc, char** argv) {
 	std::cout << "  3 - CPU Monte-Carlo Pi \n";
 	std::cout << "  4 - GPU Monte-Carlo Pi \n";
 	std::cout << "  5 - Bytes-Image File Test \n";
+	std::cout << "  6 - Median Filter CPU \n";
 
 	std::cin >> choice;
 
 	std::cout << "\n";
 	std::cout << "Choice selected - " << choice << "\n\n";
+
+	PoolLayerArgs poolArgs;
+	MedianFilterArgs filArgs;
 
 	switch (choice) {
 		//  CPU only SAXPY
@@ -64,7 +68,21 @@ int main(int argc, char** argv) {
 			std::cout << "\n\n ... Done!\n";
 			break;
 
-			
+		case 6:
+			std::cout << "Running Median Filter on CPU! \n\n";
+			filArgs = {4, 4};
+			runCpuMedianFilter("./resources/lena512color.tiff.bytes", 
+				"./resources/lena512color_fil.bytes", filArgs);
+			std::cout << "\n\n ... Done!\n";
+			break;
+
+		case 7:
+			std::cout << "Running Pool CPU! \n\n";
+			poolArgs = {PoolOp::MaxPool, 32, 32, 4, 4, 1, 1};
+			runCpuPool(poolArgs);
+			std::cout << "\n\n ... Done!\n";
+			break;
+		
 
 		default:
 			std::cout << "Hmm ... Devious, you are!\n";
