@@ -1,4 +1,4 @@
-# ECE 695 CUDA Programming Part 1
+# ECE 695 CUDA Programming Part 2
 
 ## Professor Tim Rogers <br> TA: Abhishek Bhaumick
 
@@ -6,7 +6,7 @@
 # Introduction
 
 
-The first assignment exploited data parallelism along a single dimension - with a direct one-to-one or many-to-one correlation between each thread and the data it processes.
+The first assignment exploited data parallelism along a single dimension - with a direct one-to-one or one-to-many correlation between each thread and the data it processes.
 In the second assignment we will be operating on 2-D data and look at ways to adapt some common operations for the GPU.
 
 -----------------------------------------------------------
@@ -22,6 +22,52 @@ While a number of efficient implementations of median filtering exists [[3]](#3)
 A simple description of the algorithm can be found [here](http://fourier.eng.hmc.edu/e161/lectures/smooth_sharpen/node2.html).
 
 
+## Implementation
+
+The principle of the median filter is to replace the gray level of each pixel by the median of the gray levels in a neighborhood of the pixels, instead of using the average operation.
+A simplified pseudo-code implementation of the median filtering algorithm is shown below.
+
+```plaintext
+for each pixel:
+	load filter window - filterH x filterW centred @ pixel 
+	sort the window
+	store median value as output
+```
+
+A naive CPU implementation of the same can be found at `medianFilter_cpu()` in `cpuLib.cpp`. You must implement an efficient algorithm for GPU.
+> Think carefully about which loops to parallelize and which to execute sequentially inside the GPU kernel.
+
+> Make sure you handle the edges of the image where the filter window may expand beyond the dimensions of the image. 
+> - Try to solve this at the algorithmic level instead of padding the image
+> - As an optional exercise you can try to pad the image at CPU or GPU and report the overall performance impact of this additional step.
+> - You may implement this in the `medianFilter_cpu()` **prior** to starting on your `medianFilter_gpu()`.
+
+
+### Steps
+
+1. Complete the CPU implementation
+	- verify visually using the `viewImageBytes.py` script.
+1. Write `runGpuMedianFilter()` as entrypoint function.
+1. Write the kernel `medianFilter_gpu()`
+1. Write the kernel `sort_gpu()` to sort the filter window
+	- Choose the sorting algorithm of **your choice**.
+	- Carefully weigh (_or better yet, measure_ - **optional**) 
+		- the effects of a sequential vs recursive implementation (if applicable) 
+		- and their effects on the SIMT stack.
+
+## Optimizing the Kernels
+
+- This assignment is tightly coupled with the course material - utilize your understanding of the GPU architecture and the memory heirarchy to squeeze out the best performance for your kernel. 
+- Repeated profiling with `nvprof` will help you compare the design options and evaluate the impact of your chioces. 
+- **Think deeply** and explore the design space in the following aspects
+	- _Careful_ and _Optimal_ usage of shared memory resources
+	- Leveraging GPU memory fetch and coalescing patterns
+	- Threadblock and grid assignment to shaders 
+		- and how that influences the working set in each cache
+	- the data storage format and access patterns 
+		- to help select which loops to parallelize
+
+
 ## Setting Up a Python Virtual Environment
 
 Use the following commands to setup and use a python virtual environment. This step is essential to install python packages on scholar without modifying the built-in Python copy.
@@ -33,6 +79,7 @@ $ python3 -m venv ./python
 # Activate your python virtual environment
 # **NOTE** This step must be repeated every time to select your venv as default python distribution
 $ source ./python/bin/activate
+# This step selects your "local" python environment for use instead of the system python installation
 
 # Verify python path
 $ which python3
@@ -42,8 +89,10 @@ $ which python3
 pip3 install numpy pillow
 
 # Run script 
-$ python3 makeImage.py 
-No GUI element found - disabling GUI
+$ python3 makeBytesImage.py 
+
+info: No GUI element found - disabling GUI
+
 usage: makeImage.py [-h] [-f FILE] [-l LEVEL] [-r RATIO]
 
 Prepare Image for CUDA Programming Lab 2
@@ -55,6 +104,21 @@ optional arguments:
   -r RATIO    Salt vs Pepper Ratio
 usage: makeImage.py [-h] [-f FILE] [-l LEVEL] [-r RATIO]
 makeImage.py: error: No GUI - must specify image filepath using -f 
+
+# Learn about the command line arguments
+$ python3 makeBytesImage.py --help
+
+info: No GUI element found - disabling GUI
+
+usage: makeBytesImage.py [-h] [-f FILE] [-l LEVEL] [-r RATIO]
+
+Prepare Image for CUDA Programming Lab 2
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -f FILE     input image file path
+  -l LEVEL    added noise intensity
+  -r RATIO    Salt vs Pepper Ratio
 
 ```
 
@@ -84,10 +148,10 @@ typedef struct ImageDim_t
 } ImageDim;
 ```
 
-The bytes format packs any image in a raw 8-bit pixel format comprised of a 16 byte metadata followed by RGB inteleaved data in `little-endian` format. 
-- For the purpose of this assignment, _all images will have 3 channels and 8-bit (1-Byte) pixels_.
+The bytes format packs any image in a raw 8-bit pixel format comprised of a 16 byte metadata followed by RGB inteleaved data in [little-endian](https://chortle.ccsu.edu/AssemblyTutorial/Chapter-15/ass15_3.html) format . [[5]](https://en.wikipedia.org/wiki/Endianness)
+- For the purpose of this assignment, `all images will have 3 channels and 8-bit (1-Byte) pixels`.
 - The first 16 bytes of any .bytes file will have the metadata required to interpret the contents of the rest of the file (can be used to calculate dimensions and sizes)
-- The remaining bytes in tne file will have RGB pixels interleaved.
+- The remaining bytes in the file will have RGB pixels interleaved.
 - Pixels are stored in Row-Major format.
 
 Look at the contents of `loadImageBytes()` in `cpuLib.cpp` to get an idea of storage format.
@@ -97,7 +161,7 @@ Look at the contents of `loadImageBytes()` in `cpuLib.cpp` to get an idea of sto
 |            | R G B    | R G B    | R G B | R G B      | R G B    | R G B | R G B        |
 |  16 bytes  | 3 bytes  | 3 bytes  |       | 3 bytes    | 3 bytes  |       | 3 bytes      |
 
-## Median Filtering
+
 
 <br>
 
@@ -114,10 +178,17 @@ A basic **incomplete** implementaton of a Max-Pool layer is provided inside `cpu
 
 ## GPU Implementation
 
-#### Question
 
-1. Parallelize accross batches ?
 
+<br>
+
+
+# Report
+
+
+<br> 
+
+-------
 ## References
 
 <a id="1">[1]</a> 
@@ -132,37 +203,11 @@ T. Huang, G. Yang and G. Tang, "A fast two-dimensional median filtering algorith
 <a id="4">[4]</a> 
 Arce, G.R. (2004). Weighted Median Filters. In Nonlinear Signal Processing, G.R. Arce (Ed.). https://doi-org.ezproxy.lib.purdue.edu/10.1002/0471691852.ch6
 
+<a id="5">[5]</a> 
+[Wikipedia - Endianness](https://en.wikipedia.org/wiki/Endianness)
+
 #### Queries
 
 - Use of shared memory ?
 
-
-
-Let me break the tie and schedule the office hours at 
-`4:00 PM to 5:00 PM on Thursday, 04 Feb`
-
-The format will be as before - [Zoom](https://purdue-edu.zoom.us/j/93584887789?pwd=Qlg4VHpCNGdpNy9KQ292U2lrQ0xBZz09) with [Queup](https://www.queuplive.com/room/SMFBUYOI) for ordering
-
-> abhaumic@purdue.edu is inviting you to a scheduled Zoom meeting. 
-> 
-> Join Zoom Meeting \
-> https://purdue-edu.zoom.us/j/93584887789?pwd=Qlg4VHpCNGdpNy9KQ292U2lrQ0xBZz09\
-> Meeting ID: 935 8488 7789 \
-> Passcode: 823460 \
-> One tap mobile \
-> +16465588656,,93584887789#,,,,*823460# US (New York) \
-> +13017158592,,93584887789#,,,,*823460# US (Washington DC) \
-> Dial by your location \
->         +1 646 558 8656 US (New York) \
->         +1 301 715 8592 US (Washington DC) \
->         +1 312 626 6799 US (Chicago) \
->         +1 669 900 6833 US (San Jose) \
->         +1 253 215 8782 US (Tacoma) \
->         +1 346 248 7799 US (Houston) \
-> Meeting ID: 935 8488 7789 \
-> Passcode: 823460 \
-> Find your local number: https://purdue-edu.zoom.us/u/aj1jX3lps 
-
-Queup @ 
-https://www.queuplive.com/room/SMFBUYOI
 
