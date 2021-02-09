@@ -21,11 +21,14 @@ int main(int argc, char** argv) {
 	std::cout << "ECE 695 - Lab 2 \n";
 	std::cout << "Select application: \n";
 	std::cout << "  1 - CPU SAXPY \n";
-	std::cout << "  2 - GPU Color to Grayscale \n";
+	std::cout << "  2 - GPU SAXPY \n";
 	std::cout << "  3 - CPU Monte-Carlo Pi \n";
 	std::cout << "  4 - GPU Monte-Carlo Pi \n";
 	std::cout << "  5 - Bytes-Image File Test \n";
 	std::cout << "  6 - Median Filter CPU \n";
+	std::cout << "  7 - Median Filter GPU \n";
+	std::cout << "  8 - Pool CPU \n";
+	std::cout << "  9 - Pool GPU \n";
 
 	std::cin >> choice;
 
@@ -77,6 +80,14 @@ int main(int argc, char** argv) {
 			break;
 
 		case 7:
+			std::cout << "Running Median Filter on GPU! \n\n";
+			filArgs = {4, 4};
+			runGpuMedianFilter("./resources/lena512color.tiff.bytes", 
+				"./resources/lena512color_fil.bytes", filArgs);
+			std::cout << "\n\n ... Done!\n";
+			break;
+
+		case 8:
 			std::cout << "Running Pool CPU! \n\n";
 			poolArgs = {PoolOp::MaxPool, 32, 32, 4, 4, 1, 1};
 			runCpuPool(poolArgs);

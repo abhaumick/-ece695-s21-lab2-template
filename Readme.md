@@ -37,7 +37,7 @@ for each pixel:
 A naive CPU implementation of the same can be found at `medianFilter_cpu()` in `cpuLib.cpp`. You must implement an efficient algorithm for GPU.
 > Think carefully about which loops to parallelize and which to execute sequentially inside the GPU kernel.
 
-> Make sure you handle the edges of the image where the filter window may expand beyond the dimensions of the image. 
+Make sure you handle the edges of the image where the filter window may expand beyond the dimensions of the image. 
 > - Try to solve this at the algorithmic level instead of padding the image
 > - As an optional exercise you can try to pad the image at CPU or GPU and report the overall performance impact of this additional step.
 > - You may implement this in the `medianFilter_cpu()` **prior** to starting on your `medianFilter_gpu()`.
@@ -58,10 +58,10 @@ A naive CPU implementation of the same can be found at `medianFilter_cpu()` in `
 ## Optimizing the Kernels
 
 - This assignment is tightly coupled with the course material - utilize your understanding of the GPU architecture and the memory heirarchy to squeeze out the best performance for your kernel. 
-- Repeated profiling with `nvprof` will help you compare the design options and evaluate the impact of your chioces. 
+- Repeated profiling with `nvprof` will help you compare the design options and evaluate the impact of your choices. 
 - **Think deeply** and explore the design space in the following aspects
-	- _Careful_ and _Optimal_ usage of shared memory resources
-	- Leveraging GPU memory fetch and coalescing patterns
+	- _Careful_ and _Optimal_ usage of [shared memory](https://developer.nvidia.com/blog/using-shared-memory-cuda-cc/) resources [[8]](#8)
+	- Leveraging CPU-to-GPU [data transfer](https://developer.nvidia.com/blog/how-optimize-data-transfers-cuda-cc/) and GPU memory [access and coalescing patterns](https://developer.nvidia.com/blog/how-access-global-memory-efficiently-cuda-c-kernels/) [[6]](#6) [[7]](#7)
 	- Threadblock and grid assignment to shaders 
 		- and how that influences the working set in each cache
 	- the data storage format and access patterns 
@@ -88,23 +88,6 @@ $ which python3
 # Install required python packages
 pip3 install numpy pillow
 
-# Run script 
-$ python3 makeBytesImage.py 
-
-info: No GUI element found - disabling GUI
-
-usage: makeImage.py [-h] [-f FILE] [-l LEVEL] [-r RATIO]
-
-Prepare Image for CUDA Programming Lab 2
-
-optional arguments:
-  -h, --help  show this help message and exit
-  -f FILE     input image file path
-  -l LEVEL    added noise intensity
-  -r RATIO    Salt vs Pepper Ratio
-usage: makeImage.py [-h] [-f FILE] [-l LEVEL] [-r RATIO]
-makeImage.py: error: No GUI - must specify image filepath using -f 
-
 # Learn about the command line arguments
 $ python3 makeBytesImage.py --help
 
@@ -119,6 +102,17 @@ optional arguments:
   -f FILE     input image file path
   -l LEVEL    added noise intensity
   -r RATIO    Salt vs Pepper Ratio
+
+  # Run script 
+$ python makeBytesImage.py -f ./resources/lena512color.tiff
+
+ info: No GUI element found - disabling GUI 
+
+TIFF 512x512 RGB
+(512, 512, 3)
+Storing bytes to - /......./resources/lena512color.tiff.bytes
+786448 bytes written
+ ... Done ! 
 
 ```
 
@@ -205,6 +199,16 @@ Arce, G.R. (2004). Weighted Median Filters. In Nonlinear Signal Processing, G.R.
 
 <a id="5">[5]</a> 
 [Wikipedia - Endianness](https://en.wikipedia.org/wiki/Endianness)
+
+
+[NVIDIA Developer Blog](https://developer.nvidia.com/blog)  
+<a id="6">[6]</a> 
+	https://developer.nvidia.com/blog/how-optimize-data-transfers-cuda-cc/  
+<a id="7">[7]</a>
+	https://developer.nvidia.com/blog/how-access-global-memory-efficiently-cuda-c-kernels/  
+<a id="8">[8]</a>
+	https://developer.nvidia.com/blog/using-shared-memory-cuda-cc/
+
 
 #### Queries
 

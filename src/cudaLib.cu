@@ -11,7 +11,7 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort)
 }
 
 __global__ 
-void saxpy_gpu (float* x, float* y, int scale, int size) {
+void saxpy_gpu (float* x, float* y, float scale, int size) {
 	//	TODO: replaced with full 3D thread block computations
 	int threadId = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -252,4 +252,20 @@ double estimatePi(uint64_t generateThreadCount, uint64_t sampleSize,
 	// Adjust for quarter circle
 	approxPi = approxPi * 4.0;
 	return approxPi;
+}
+
+
+
+int runGpuMedianFilter (std::string imgPath, std::string outPath, MedianFilterArgs args) {
+	
+	std::cout << "Lazy, you are! ... ";
+	std::cout << "Filter pixels, you must! ... ";
+
+	return 0;
+}
+
+int medianFilter_gpu (uint8_t inPixels, ImageDim imgDim, 
+	uint8_t outPixels, MedianFilterArgs args) {
+
+	return 0;
 }

@@ -60,7 +60,7 @@
 	 * @param size 	uint64_t 	size of the vector Y
 	 * @return void 
 	 */
-	extern __global__ void saxpy_gpu (float* x, float* y, int scale, int size);
+	extern __global__ void saxpy_gpu (float* x, float* y, float scale, int size);
 
 	/**
 	 * @brief Entrypoint for GPU Monte-Carlo estimation of Pi
@@ -85,5 +85,41 @@
 	 */
 	extern double estimatePi(uint64_t generateThreadCount, uint64_t sampleSize, 
 		uint64_t reduceThreadCount, uint64_t reduceSize);
+
+
+
+	/**
+	 * @brief 
+	 * 
+	 * @param imgPath path to the input .bytes file - to be loaded using loadBytesImage()
+	 * @param outPath path to output .bytes file - to be written to using writeBytesImage()
+	 * @param args settings for median filter
+	 * @return int 
+	 */
+	extern int runGpuMedianFilter (std::string imgPath, std::string outPath, MedianFilterArgs args);
+
+
+	/**
+	 * @brief GPU kernel 
+	 * 
+	 * @param inPixels 	uint8_t *			pointer to input of medianFilter
+	 * @param imgDim 	ImageDim			struct converying the diemnsionality of inPixels
+	 * @param outPixels uint8_t *			pointer to output of medianFilter
+	 * @param args 		MedianFilterArgs	struct with settings for median filter
+	 * @return int 
+	 */
+	extern int medianFilter_gpu (uint8_t * inPixels, ImageDim imgDim, 
+		uint8_t * outPixels, MedianFilterArgs args);
+
+	/**
+	 * @brief GPU kernel to sort a given array
+	 * 
+	 * @param array 	uint8_t *	pointer to the array to be sorted 
+	 *								(Can point to anywhere within the addressable memory heirarchy)
+	 * @param arrayDim 	dim3		provides upto 3 dimensions to convey how the data chunk 
+	 *								pointed to by array is organized
+	 * @return int 
+	 */
+	extern int sortPixels_gpu (uint8_t * array, dim3 arrayDim);
 
 #endif

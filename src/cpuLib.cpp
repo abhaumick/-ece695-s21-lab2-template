@@ -326,13 +326,11 @@ int poolLayer (float * input, float * output, PoolLayerArgs args) {
 					{
 					//	STUDENT: Add cases and complete pooling code for all 3 options
 					case PoolOp::MaxPool:
-						break;
 					
 					default:
 						std::cout << "Lazy, you are! ... ";
-						std::cout << "Write code, you must! ... ";
-						std::cout << "Add cases, you must! ... ";
 						std::cout << "Pick max from pool, you must!\n";
+						return 0;	//	STUDENT: Remove this as reqd.
 						break;
 					}
 				}
