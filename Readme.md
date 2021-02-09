@@ -9,17 +9,23 @@
 The first assignment exploited data parallelism along a single dimension - with a direct one-to-one or one-to-many correlation between each thread and the data it processes.
 In the second assignment we will be operating on 2-D data and look at ways to adapt some common operations for the GPU.
 
+This lab is a significant departure from the previous lab. There are a number of unique ways to parallelize each task and each choice comes with its own set of tradeoffs. There is a significant set of possible implementations and we cannot wait to see your unique take on the problems:
+
+> To boldly go where no one has gone before!
+>
+> -- <cite>Captain James T. Kirk, USS Enterprise</cite>
+
 -----------------------------------------------------------
 <br>
 
-# PART A: Image Filters 
+# PART A: Filtering Noise from Images
 ## Median Filtering
 
 The [median filter](https://en.wikipedia.org/wiki/Median_filter) is a non-linear digital filtering technique, often used to remove noise from an image or signal [[1]](#1). For small to moderate levels of Gaussian noise, the median filter is demonstrably better than Gaussian blur at removing noise whilst preserving edges for a given, fixed window size. [[2]](#2).
 
 While a number of efficient implementations of median filtering exists [[3]](#3), we will be using the relatively compute-intensive "simple" implementation, that precisely computes the median. Furthermore, to simplify the implementation, we will be using a cental symmetric rectangular / square window such that the pixel at the centre will be replaced by the median of all the pixels in
 
-A simple description of the algorithm can be found [here](http://fourier.eng.hmc.edu/e161/lectures/smooth_sharpen/node2.html).
+A simple description of the algorithm can be found [here](http://fourier.eng.hmc.edu/e161/lectures/smooth_sharpen/node2.html). The curious, interested in exploring Median Filtering in the context of recent (and past) academic work can visit [this](https://www.sciencedirect.com/topics/computer-science/median-filter).
 
 
 ## Implementation
@@ -162,6 +168,8 @@ Look at the contents of `loadImageBytes()` in `cpuLib.cpp` to get an idea of sto
 # PART B: Pooling 
 
 
+<TODO:  Add Content Here>
+
 ## CPU Implementation
 
 A basic **incomplete** implementaton of a Max-Pool layer is provided inside `cpuLib.h`. It lays down the API and (after completion) can be used for checking your GPU implementation later.
@@ -178,6 +186,31 @@ A basic **incomplete** implementaton of a Max-Pool layer is provided inside `cpu
 
 
 # Report
+
+
+## Performance and Speedup
+
+> Time is the only true measure of performance
+
+Please report all metrics and speedups in terms of absolute execution time ( in _&mu;s_ or _ms_ as applicable). _Percentage doesn not convey the actual execution time._
+
+An example of the `stacked bar chart` format expected for reporting the breakup of workload execution time for the report is given below. _Figure is indicative of format and has no correlation with any profiling graph real or fictional._
+
+
+<span style="display:block;text-align:center">\
+    ![stacked bar chart image](./resources/stackedBar.png)
+</span>
+
+### Graphs
+
+Here are some ideas for the graphs that you can use to present your efforts and results in the report.
+1. Stacked bar chart (as in figure) showing execution **time** vs problem size
+1. line or bar chart showing speedup vs naive cpu
+1. chart showing speedup vs optimized cpu (if you make any changes)
+1. chart with performance vs shared memory strategy (size or organization) - same or varying problem size
+1. chart with performance gain acheived by any tenchiques you have applied
+
+Be terse and lucid with explanations explaining your observations from the trends you observe.
 
 
 <br> 
@@ -210,8 +243,6 @@ Arce, G.R. (2004). Weighted Median Filters. In Nonlinear Signal Processing, G.R.
 	https://developer.nvidia.com/blog/using-shared-memory-cuda-cc/
 
 
-#### Queries
 
-- Use of shared memory ?
 
 
