@@ -167,6 +167,11 @@ Look at the contents of `loadImageBytes()` in `cpuLib.cpp` to get an idea of sto
 
 # PART B: Pooling 
 
+A quick overview of the pooling operation in Neural Networks can be found [here](https://d2l.ai/chapter_convolutional-neural-networks/pooling.html)
+
+Plagiarized - 
+> Max pooling is done to in part to help over-fitting by providing an abstracted form of the representation. As well, it reduces the computational cost by reducing the number of parameters to learn and provides basic translation invariance to the internal representation. Max pooling is done by applying a max filter to (usually) non-overlapping subregions of the initial representation. 
+
 
 <TODO:  Add Content Here>
 
