@@ -67,4 +67,39 @@
 	extern int runCpuMedianFilter (std::string imgPath, std::string outPath, MedianFilterArgs args);
 
 	enum class PoolOp{MaxPool, AvgPool, MinPool};
+
+	extern std::ostream& operator<< (std::ostream &o,PoolOp op);
+
+	typedef struct TensorShape_t {
+		uint32_t height;	//	Height = # rows
+		uint32_t width;		//	Width = # cols
+		uint32_t channels;	//	
+	} TensorShape;
+
+	typedef struct PoolLayerArgs_t {
+		PoolOp opType;
+		uint32_t poolH;		//	pooling rows
+		uint32_t poolW;		//	pooling cols
+		uint32_t strideH;
+		uint32_t strideW;
+	} PoolLayerArgs;
+
+
+	/**
+	 * @brief 
+	 * 
+	 * @param input 
+	 * @param inShape 
+	 * @param output 
+	 * @param outShape 
+	 * @param args 
+	 * @return int 
+	 */
+	extern int poolLayer_cpu (float * input, TensorShape inShape, 
+		float * output, TensorShape outShape, PoolLayerArgs args);
+
+
+	extern int runCpuPool (TensorShape inShape, PoolLayerArgs poolArgs);
+	
+
 #endif

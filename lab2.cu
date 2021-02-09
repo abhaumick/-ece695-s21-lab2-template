@@ -37,6 +37,7 @@ int main(int argc, char** argv) {
 
 	PoolLayerArgs poolArgs;
 	MedianFilterArgs filArgs;
+	TensorShape inShape;
 
 	switch (choice) {
 		//  CPU only SAXPY
@@ -89,8 +90,9 @@ int main(int argc, char** argv) {
 
 		case 8:
 			std::cout << "Running Pool CPU! \n\n";
-			poolArgs = {PoolOp::MaxPool, 32, 32, 4, 4, 1, 1};
-			runCpuPool(poolArgs);
+			inShape = {32, 32};
+			poolArgs = {PoolOp::MaxPool, 4, 4, 1, 1};
+			runCpuPool(inShape, poolArgs);
 			std::cout << "\n\n ... Done!\n";
 			break;
 		

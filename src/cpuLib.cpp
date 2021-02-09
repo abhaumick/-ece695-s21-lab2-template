@@ -302,15 +302,16 @@ std::ostream& operator<< (std::ostream &o,PoolOp op) {
 	}
 }
 
-int poolLayer (float * input, float * output, PoolLayerArgs args) {
+int poolLayer_cpu (float * input, TensorShape inShape, 
+	float * output, TensorShape outShape, PoolLayerArgs args) {
 	float poolPick;
 	uint32_t poolH = args.poolH;
 	uint32_t poolW = args.poolW;
-	uint32_t outputH = (args.inputH + poolH - 1) / poolH;
-	uint32_t outputW = (args.inputW + poolW - 1) / poolW;
+	uint32_t outputH = (inShape.height + poolH - 1) / poolH;
+	uint32_t outputW = (inShape.width + poolW - 1) / poolW;
 	uint32_t row, col;
 
-	std::cout << args.opType << " : " << args.inputH << " x " << args.inputW 
+	std::cout << args.opType << " : " << inShape.height << " x " << inShape.width 
 		<< " with a " << poolH << " x " << poolW << " window -> " 
 		<< outputH << " x " << outputW << "\n";
 
@@ -318,7 +319,7 @@ int poolLayer (float * input, float * output, PoolLayerArgs args) {
 		for (uint32_t outCol = 0; outCol < outputW; ++ outCol) {
 			//	STUDENT: Assign to first value of pool area
 			// poolPick = 0; 
-			poolPick = *(input + (outRow * poolH) * args.inputW + (outCol * poolW));
+			poolPick = *(input + (outRow * poolH) * inShape.width + (outCol * poolW));
 			for (uint32_t poolRow = 0; poolRow < args.poolH; ++ poolRow) {
 				for (uint32_t poolCol = 0; poolCol < args.poolW; ++ poolCol) {
 					//	STUDENT: Calculate row and col of element here
@@ -340,14 +341,19 @@ int poolLayer (float * input, float * output, PoolLayerArgs args) {
 	}
 }
 
-int runCpuPool (PoolLayerArgs poolArgs) {
+int runCpuPool (TensorShape inShape, PoolLayerArgs poolArgs) {
 	
-	uint32_t inH = poolArgs.inputH;
-	uint32_t inW = poolArgs.inputW;
+	uint32_t inH = inShape.height;
+	uint32_t inW = inShape.width;
 	uint32_t poolH = poolArgs.poolH;
 	uint32_t poolW = poolArgs.poolW;
 	uint32_t outH = (inH + poolH - 1) / poolH;
 	uint32_t outW = (inW + poolW - 1) / poolW;
+
+	TensorShape outShape;
+	outShape.height 	= outH;
+	outShape.width 		= outW;
+	outShape.channels 	= inShape.channels;
 
 	float * inMatrix = (float *) malloc(inH * inW * sizeof(float));
 	float * outMatrix = (float *) malloc(outH * outW * sizeof(float));
@@ -360,7 +366,7 @@ int runCpuPool (PoolLayerArgs poolArgs) {
 		<< poolW << " window \n";
 
 
-	poolLayer(inMatrix, outMatrix, poolArgs);
+	poolLayer_cpu(inMatrix, inShape, outMatrix, outShape, poolArgs);
 
 	return 0;
 }
