@@ -3,6 +3,9 @@
 ## Professor Tim Rogers <br> TA: Abhishek Bhaumick
 
 ## Due on (TODO: Confirm)
+-------------
+<br>
+
 # Introduction
 
 
@@ -13,7 +16,7 @@ The official [CUDA Documentation](https://docs.nvidia.com/cuda/) is the best res
 
 > We would strongly recommend reading through the CUDA related links within this document before you start writing code.
 
-This lab is a significant departure from the previous lab. There are a number of unique ways to parallelize each task and each choice comes with its own set of tradeoffs. There is a significant set of possible implementations and we cannot wait to see your unique take on the problems:
+This lab is a significant departure from the previous lab. There are a number of unique ways to parallelize each task and each choice comes with its own set of tradeoffs. There is a significant set of possible implementations and _we cannot wait to see your `ingeneous` and `unique` take on the problems._
 
 > To boldly go where no one has gone before!
 >
@@ -76,6 +79,11 @@ Make sure you handle the edges of the image where the filter window may expand b
 		- and how that influences the working set in each cache
 	- the data storage format and access patterns 
 		- to help select which loops to parallelize
+
+
+> Insufficient facts always invites danger, Captain.
+>
+> -- <cite> Cdr. Spock, USS Enterprise </cite>
 
 
 ## Setting Up a Python Virtual Environment
