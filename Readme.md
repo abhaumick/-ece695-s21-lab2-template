@@ -9,6 +9,10 @@
 The first assignment exploited data parallelism along a single dimension - with a direct one-to-one or one-to-many correlation between each thread and the data it processes.
 In the second assignment we will be operating on 2-D data and look at ways to adapt some common operations for the GPU.
 
+The official [CUDA Documentation](https://docs.nvidia.com/cuda/) is the best resource for  implementation details and API specifics. The [NVIDIA Developer Blog](https://developer.nvidia.com/blog) has a number of guides which showcase the latest and best CUDA programming practices.
+
+> We would strongly recommend reading through the CUDA related links within this document before you start writing code.
+
 This lab is a significant departure from the previous lab. There are a number of unique ways to parallelize each task and each choice comes with its own set of tradeoffs. There is a significant set of possible implementations and we cannot wait to see your unique take on the problems:
 
 > To boldly go where no one has gone before!
@@ -129,6 +133,13 @@ Modern images are stored in compressed formats like `JPEG` which have their own 
 - `makeBytesImage.py` can be used to convert any given image (tested with `.jpg` and `.tiff` formats) into a `.bytes` file.
 - `viewBytesImage.py` can be used in a GUI-enabled environment to view the contents of a `.bytes` image. 
 
+For details about the command line arguments that can be passed to each script use 
+```bash
+$ python3 makeBytesImage.py --help
+# or
+$ python3 viewBytesImage.py --help
+```
+
 
 > **NOTE** : Viewing the images through any of this scripts will require you to run the scripts on a GUI enabled workspace (ThinClient or your local machines). 
 > 
@@ -216,6 +227,21 @@ The naive CPU implementation is a set of nested loops - each loop presents an op
  and [Reporting your Progress](https://github.com/tgrogers/ece695-2021/blob/master/cuda-programming-assignment/cuda-part1.md#report) to build, test and profile your application.
 
 > All the instructions provided in Lab 1 also apply to this Lab
+
+**Each time you login**
+- Load the `gcc`, `cuda` and `cmake` modules
+	To avoid typing this every time, consider adding this command to `~/.bashrc`.
+    ```bash
+    $ module load gcc cuda cmake
+    ```
+	.
+- Activate the python virtual environment setup within the assignment directory
+    ```bash
+    $ cd <LAB2_ROOT_DIR>
+    $ source ./python/bin/activate
+    > (python) user@scholar-fe05:~/...../lab2 $
+    ```
+    Succesful loading of the venv will be indicated by `(python)` in front of the shell prompt as shown in the last line above
 
 ## Performance and Speedup
 
