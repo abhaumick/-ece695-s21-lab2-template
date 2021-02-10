@@ -305,10 +305,13 @@ std::ostream& operator<< (std::ostream &o,PoolOp op) {
 int poolLayer_cpu (float * input, TensorShape inShape, 
 	float * output, TensorShape outShape, PoolLayerArgs args) {
 	float poolPick;
+	
 	uint32_t poolH = args.poolH;
 	uint32_t poolW = args.poolW;
-	uint32_t outputH = (inShape.height + poolH - 1) / poolH;
-	uint32_t outputW = (inShape.width + poolW - 1) / poolW;
+	//	STUDENT: Calculate or unpack TensorShapes
+	std::cout << "Lazy, you are! ... ";
+	uint32_t outputH = 1;		
+	uint32_t outputW = 1;
 	uint32_t row, col;
 
 	std::cout << args.opType << " : " << inShape.height << " x " << inShape.width 
@@ -319,7 +322,7 @@ int poolLayer_cpu (float * input, TensorShape inShape,
 		for (uint32_t outCol = 0; outCol < outputW; ++ outCol) {
 			//	STUDENT: Assign to first value of pool area
 			// poolPick = 0; 
-			poolPick = *(input + (outRow * poolH) * inShape.width + (outCol * poolW));
+
 			for (uint32_t poolRow = 0; poolRow < args.poolH; ++ poolRow) {
 				for (uint32_t poolCol = 0; poolCol < args.poolW; ++ poolCol) {
 					//	STUDENT: Calculate row and col of element here
@@ -329,44 +332,26 @@ int poolLayer_cpu (float * input, TensorShape inShape,
 					case PoolOp::MaxPool:
 					
 					default:
-						std::cout << "Lazy, you are! ... ";
 						std::cout << "Pick max from pool, you must!\n";
 						return 0;	//	STUDENT: Remove this as reqd.
 						break;
 					}
 				}
 			}
-			std::cout << poolPick << " @ (" << (outRow * poolH) << ", " << (outCol * poolW) << ")\n";
+			std::cout << poolPick << " @ (" << outRow << ", " << outCol << ")\n";
 		}
 	}
 }
 
 int runCpuPool (TensorShape inShape, PoolLayerArgs poolArgs) {
 	
-	uint32_t inH = inShape.height;
-	uint32_t inW = inShape.width;
-	uint32_t poolH = poolArgs.poolH;
-	uint32_t poolW = poolArgs.poolW;
-	uint32_t outH = (inH + poolH - 1) / poolH;
-	uint32_t outW = (inW + poolW - 1) / poolW;
-
-	TensorShape outShape;
-	outShape.height 	= outH;
-	outShape.width 		= outW;
-	outShape.channels 	= inShape.channels;
-
-	float * inMatrix = (float *) malloc(inH * inW * sizeof(float));
-	float * outMatrix = (float *) malloc(outH * outW * sizeof(float));
-
 	srand(time(NULL));
 
-	vectorInit(inMatrix, (inH * inW));
+	//	STUDENT: Initialize required memories));
+	std::cout << "Set Tensors to stun !!"
 
-	std::cout << poolArgs.opType << " : " << inH << " x " << inW << " with a " << poolH << " x "
-		<< poolW << " window \n";
-
-
-	poolLayer_cpu(inMatrix, inShape, outMatrix, outShape, poolArgs);
+	//	STUDENT: call pool function
+	//	poolLayer_cpu(inMatrix, inShape, outMatrix, outShape, poolArgs);
 
 	return 0;
 }
