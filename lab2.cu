@@ -95,7 +95,13 @@ int main(int argc, char** argv) {
 			runCpuPool(inShape, poolArgs);
 			std::cout << "\n\n ... Done!\n";
 			break;
-		
+			
+		case 9:
+			std::cout << "Call Pool GPU, you must! \n\n";
+			//  std::cout << "Running Pool GPU! \n\n";
+			//	STUDENT: Call runGpuPool here
+			//  std::cout << "\n\n ... Done!\n";
+			break;
 
 		default:
 			std::cout << "Hmm ... Devious, you are!\n";
