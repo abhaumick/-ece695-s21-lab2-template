@@ -203,7 +203,7 @@ The naive CPU implementation is a set of nested loops - each loop presents an op
 
 
 <span style="display:block;text-align:center">\
-    ![Pooling Algorithm](./figures/PoolAlgoSlide .png)
+    ![Pooling Algorithm](./figures/PoolAlgoSlide.png)
 </span>
 
 
