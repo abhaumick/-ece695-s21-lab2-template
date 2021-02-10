@@ -348,7 +348,7 @@ int runCpuPool (TensorShape inShape, PoolLayerArgs poolArgs) {
 	srand(time(NULL));
 
 	//	STUDENT: Initialize required memories));
-	std::cout << "Set Tensors to stun !!"
+	std::cout << "Set Tensors to stun !!";
 
 	//	STUDENT: call pool function
 	//	poolLayer_cpu(inMatrix, inShape, outMatrix, outShape, poolArgs);
