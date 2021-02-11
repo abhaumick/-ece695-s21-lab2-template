@@ -2,10 +2,7 @@
 
 ## Professor Tim Rogers <br> TA: Abhishek Bhaumick
 
-## Due on (TODO: Confirm)
--------------
-<br>
-
+## Due on March 7, 2021
 # Introduction
 
 
@@ -193,9 +190,10 @@ A quick overview of the pooling operation in Neural Networks can be found [here]
 > 
 > Formally, its function is to progressively reduce the spatial size of the representation to reduce the amount of parameters and computation in the network. The most common form of pooling is max pooling.
 >
-> Max pooling is done to in part to help over-fitting by providing an abstracted form of the representation. As well, it reduces the computational cost by reducing the number of parameters to learn and provides basic translation invariance to the internal representation. Max pooling is done by applying a max filter to (usually) non-overlapping subregions of the initial representation. [[10]](#10)
+> Max pooling is done, in part, to help over-fitting by providing an abstracted form of the representation. As well, it reduces the computational cost by reducing the number of parameters to learn and provides basic translation invariance to the internal representation. Max pooling is done by applying a max filter to (usually) non-overlapping subregions of the initial representation. [[10]](#10)
 
-<TODO:  Add Content Here>
+> The next two labs will introduce a deep neural network in its entirelty and provide you the opportunity to implement a foundational work on DNNs which has been cited > 76k times! -- AlexNet (http://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf).
+> For this part, however, you are only required to implement the pooling layer in isolation.
 
 An illustration of the pool operation can be found below
 
